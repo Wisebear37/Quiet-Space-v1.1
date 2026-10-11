@@ -99,6 +99,7 @@ body[data-theme="dark"] .dock-stop,body[data-theme="dark"] .dock-cancel{color:#B
 <div class="sound-row"><div>🌸 <strong>Pink noise</strong><small>Balanced, softer noise</small></div><button class="toggle" onclick="playAudio('pink')">Play</button></div>
 <div class="sound-row"><div>📻 <strong>White noise</strong><small>Even broadband hush</small></div><button class="toggle" onclick="playAudio('white')">Play</button></div>
 <div class="sound-row"><div>🌌 <strong>Deep ambient hum</strong><small>A low, steady drone</small></div><button class="toggle" onclick="playAudio('hum')">Play</button></div>
+<div class="sound-row"><div>🌙 <strong>Moonlit Strings</strong><small>Warm, piano-like notes inspired by a Chinese zither</small></div><button class="toggle" onclick="playAudio('moonlit')">Play</button></div>
 </div>
 <div class="detail" style="margin-top:14px">
 <div class="eyebrow">BINAURAL BEATS</div>
@@ -219,6 +220,20 @@ function makeNoise(kind,level=1){
  const filter=ctx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=kind==='white'?8500:kind==='pink'?2200:kind==='brown'?550:kind==='rain'?2400:kind==='ocean'?850:kind==='stream'?1800:kind==='wind'?600:kind==='storm'?1000:kind==='fire'?1400:kind==='train'?350:1000;
  const g=ctx.createGain();g.gain.value=level;src.connect(filter);filter.connect(g);g.connect(audioGain);src.start();audioNodes.push(src,filter,g);return {src,filter,g};
 }
+function playMoonlitNote(freq,pan=0,level=.055){
+ const ctx=audioContext(),start=ctx.currentTime;
+ // Soft, rounded harmonics create a mellow zither/piano-like pluck without a sharp metallic twang.
+ [[1,1],[2,.24],[3,.055]].forEach(([partial,amp])=>{
+  const o=ctx.createOscillator(),g=ctx.createGain(),p=ctx.createStereoPanner();
+  o.type='sine';o.frequency.setValueAtTime(freq*partial,start);p.pan.value=pan;
+  const peak=Math.max(.0001,level*amp);
+  g.gain.setValueAtTime(.0001,start);
+  g.gain.exponentialRampToValueAtTime(peak,start+.035);
+  g.gain.exponentialRampToValueAtTime(.0001,start+2.8);
+  o.connect(g);g.connect(p);p.connect(audioGain);o.start(start);o.stop(start+2.85);
+  audioNodes.push(o,g,p);
+ });
+}
 function tone(freq,pan=0,level=.04,type='sine'){
  const ctx=audioContext(),o=ctx.createOscillator(),g=ctx.createGain(),p=ctx.createStereoPanner();
  o.type=type;o.frequency.value=freq;g.gain.value=level;p.pan.value=pan;o.connect(g);g.connect(p);p.connect(audioGain);o.start();audioNodes.push(o,g,p);return o;
@@ -236,6 +251,22 @@ function playAudio(type){
  else if(type==='fire'){makeNoise('fire',.13);makeNoise('brown',.04);loopTimer=setInterval(()=>{if(activeSound!=='fire')return;const o=tone(800+Math.random()*1600,Math.random()-.5,.008,'triangle');o.frequency.setTargetAtTime(200+Math.random()*400,ctx.currentTime,.08);setTimeout(()=>{try{o.stop()}catch(e){}},180)},240)}
  else if(type==='train'){makeNoise('train',.22);tone(72,0,.025,'sawtooth')}
  else if(type==='hum'){tone(90,0,.04,'sine');tone(91.5,0,.025,'sine')}
+ else if(type==='moonlit'){
+  // A slow, pentatonic melody with rounded plucks and long, gentle decays.
+  const notes=[261.63,392,329.63,523.25,392,329.63,293.66,440,349.23,523.25,440,329.63,261.63,329.63,392,293.66];
+  let step=0;
+  const playStep=()=>{
+   if(activeSound!=='moonlit')return;
+   const note=notes[step%notes.length];
+   const pan=[-.22,0,.18,.08,-.12,.12][step%6];
+   playMoonlitNote(note,pan,.052);
+   if(step%4===0)playMoonlitNote(note/2,pan*.5,.018);
+   step++;
+  };
+  playStep();loopTimer=setInterval(playStep,1750);
+  // Very quiet harmonic bed underneath, kept softer than the melody.
+  tone(130.81,0,.009,'sine');tone(196,0,.006,'sine');
+ }
  updateSoundButtons();
  }catch(e){stopAudio();alert('Audio could not start in this browser. Please try again.')}}
 function playBeat(diff){
@@ -251,7 +282,7 @@ function stopAudio(){
 }
 function updateSoundButtons(){
  document.querySelectorAll('#sounds .toggle').forEach(b=>{const onclick=b.getAttribute('onclick')||'';let match=onclick.match(/playAudio\('([^']+)'\)/);let beat=onclick.match(/playBeat\((\d+)\)/);const id=match?match[1]:beat?'beat'+beat[1]:'';b.textContent=(activeSound===id)?'Stop':'Play';});
- const resume=$("resumeLastSound");if(resume)resume.disabled=!lastSound;updateMuteButton();const status=$('dockAudioStatus');if(status){status.textContent=activeSound?'Playing: '+(activeSound.startsWith('beat')?'Binaural beat '+activeSound.slice(4)+' Hz':({rain:'Soft rain',storm:'Distant thunderstorm',ocean:'Ocean waves',stream:'Forest stream',forest:'Night forest',crickets:'Crickets at dusk',wind:'Wind through trees',fire:'Cozy fireplace',train:'Train carriage',brown:'Brown noise',pink:'Pink noise',white:'White noise',hum:'Deep ambient hum'}[activeSound]||'sound')):'Ready when you are';}
+ const resume=$("resumeLastSound");if(resume)resume.disabled=!lastSound;updateMuteButton();const status=$('dockAudioStatus');if(status){status.textContent=activeSound?'Playing: '+(activeSound.startsWith('beat')?'Binaural beat '+activeSound.slice(4)+' Hz':({rain:'Soft rain',storm:'Distant thunderstorm',ocean:'Ocean waves',stream:'Forest stream',forest:'Night forest',crickets:'Crickets at dusk',wind:'Wind through trees',fire:'Cozy fireplace',train:'Train carriage',brown:'Brown noise',pink:'Pink noise',white:'White noise',hum:'Deep ambient hum',moonlit:'Moonlit Strings'}[activeSound]||'sound')):'Ready when you are';}
 }
 const journalPromptSets={daily:['What were today’s highs and lows?','What is one small thing that went better than expected?','What feeling showed up most for me today?','What is something I want to give myself credit for today?','What helped me feel a little more settled?','What do I need more of right now?'],self:['What is one thing I admire about myself?','What would I say to a friend going through what I’m going through?','What is something I’ve handled that once felt difficult?','What part of myself deserves more patience?','What is a quality I bring to the people I care about?','What is one kind thing I can tell myself today?'],tomorrow:['What am I looking forward to tomorrow?','What is one small thing I can do to make tomorrow gentler?','What can I set down for tonight instead of solving now?','What is one thing I’d like to make time for soon?','What would make tomorrow feel like enough?'],hard:['What feels heaviest right now, if I want to name it?','What is one thing I need permission to stop expecting of myself today?','What helped me get through a hard moment before?','What is within my control, and what can I let be for now?','What would comfort look like in the next ten minutes?','Even if today was hard, what is one small thing I did to keep going?']};
 let activePromptCategory='daily';
