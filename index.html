@@ -56,6 +56,7 @@ body[data-theme="dark"] .dock-stop,body[data-theme="dark"] .dock-cancel{color:#B
 </style>
 </head>
 <body>
+<audio id="backgroundAudio" autoplay playsinline aria-hidden="true" style="position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;left:-10px;bottom:-10px"></audio>
 <div class="app">
 <header class="top"><div class="brand">☁ <span>Quiet Space</span></div><div class="top-right"><div class="eyebrow" id="dateLabel">A little room to breathe</div><label class="theme-switch" title="Switch between light and dark mode"><span class="theme-icon" aria-hidden="true">☀</span><input id="themeToggle" type="checkbox" role="switch" aria-label="Dark mode"><span class="switch-track"><span class="switch-thumb"></span></span><span class="theme-icon" aria-hidden="true">☾</span></label></div></header>
 <main>
@@ -189,7 +190,24 @@ function toggleMute(){audioMuted=!audioMuted;if(masterGain&&activeSound){const c
 function updateMuteButton(){const b=$("muteAudioButton");if(!b)return;b.textContent=audioMuted?"🔇":"🔊";b.setAttribute("aria-label",audioMuted?"Unmute audio":"Mute audio");b.title=audioMuted?"Unmute audio":"Mute audio";b.setAttribute("aria-pressed",String(audioMuted))}
 function rememberSound(key){lastSound=key;try{localStorage.setItem("quietSpaceLastSound",key)}catch(e){}const b=$("resumeLastSound");if(b)b.disabled=!lastSound}
 function resumeLastSound(){if(!lastSound)return;if(lastSound.startsWith("beat"))playBeat(Number(lastSound.slice(4)));else playAudio(lastSound)}
-function connectMasterGain(ctx,initialGain){audioGain=ctx.createGain();audioGain.gain.value=initialGain;masterGain=ctx.createGain();masterGain.gain.value=audioMuted?0:masterVolume;audioGain.connect(masterGain);masterGain.connect(ctx.destination)}
+let backgroundStream=null;
+function connectMasterGain(ctx,initialGain){
+ audioGain=ctx.createGain();audioGain.gain.value=initialGain;
+ masterGain=ctx.createGain();masterGain.gain.value=audioMuted?0:masterVolume;
+ audioGain.connect(masterGain);
+ // Route synthesized sound through a media element, which has a better chance
+ // of continuing as background audio on mobile browsers than Web Audio alone.
+ try{
+  backgroundStream=ctx.createMediaStreamDestination();
+  masterGain.connect(backgroundStream);
+  const player=$('backgroundAudio');
+  if(player){
+   player.srcObject=backgroundStream.stream;
+   const playback=player.play();
+   if(playback&&playback.catch)playback.catch(()=>{});
+  }else{masterGain.connect(ctx.destination)}
+ }catch(e){backgroundStream=null;masterGain.connect(ctx.destination)}
+}
 function cancelSleepTimer(){if(sleepTimerTimeout)clearTimeout(sleepTimerTimeout);if(sleepFadeTimeout)clearTimeout(sleepFadeTimeout);sleepTimerTimeout=null;sleepFadeTimeout=null;sleepTimerEndsAt=0;$('sleepTimerStatus').textContent='Timer cancelled. Your sound will keep playing.';$('startSleepTimer').textContent='Set timer';$('startSleepTimer').disabled=false;$('cancelSleepTimer').classList.remove('visible')}
 function startSleepTimer(){if(!activeSound){$('sleepTimerStatus').textContent='Choose a sound first, then set your timer.';return}cancelSleepTimer();const minutes=Number($('sleepTimer').value);sleepTimerEndsAt=Date.now()+minutes*60000;const duration=minutes<60?minutes+' minutes':(minutes%60?Math.floor(minutes/60)+' hr '+minutes%60+' min':(minutes/60)+' hour'+(minutes===60?'':'s'));$('sleepTimerStatus').textContent='Timer set for '+duration+'. Your sound will gently fade out at the end.';$('startSleepTimer').textContent='Timer set';$('startSleepTimer').disabled=true;$('cancelSleepTimer').classList.add('visible');sleepTimerTimeout=setTimeout(()=>{if(!activeSound)return;const ctx=audioContext();if(masterGain){masterGain.gain.cancelScheduledValues(ctx.currentTime);masterGain.gain.setValueAtTime(masterGain.gain.value,ctx.currentTime);masterGain.gain.linearRampToValueAtTime(0,ctx.currentTime+10)}$('sleepTimerStatus').textContent='Time to rest. Fading out now…';sleepFadeTimeout=setTimeout(()=>{stopAudio();$('sleepTimerStatus').textContent='Your sound has stopped. Rest well.';$('startSleepTimer').textContent='Set timer';$('startSleepTimer').disabled=false;$('cancelSleepTimer').classList.remove('visible');sleepTimerTimeout=null;sleepFadeTimeout=null;sleepTimerEndsAt=0},10000)},minutes*60000)}
 function audioContext(){audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx}
@@ -229,7 +247,7 @@ function playBeat(diff){
 function stopAudio(){
  if(sleepTimerTimeout)clearTimeout(sleepTimerTimeout);if(sleepFadeTimeout)clearTimeout(sleepFadeTimeout);sleepTimerTimeout=null;sleepFadeTimeout=null;sleepTimerEndsAt=0;
  if(loopTimer){clearInterval(loopTimer);loopTimer=null}
- audioNodes.forEach(n=>{try{if(n.stop)n.stop();if(n.disconnect)n.disconnect()}catch(e){}});audioNodes=[];if(audioGain){try{audioGain.disconnect()}catch(e){}}if(masterGain){try{masterGain.disconnect()}catch(e){}}audioGain=null;masterGain=null;activeSound=null;updateSoundButtons();if($("startSleepTimer")){$("startSleepTimer").textContent="Set timer";$("startSleepTimer").disabled=false;$("cancelSleepTimer").classList.remove("visible");if($("sleepTimerStatus"))$("sleepTimerStatus").textContent="Choose a sound, then set a timer."}
+ audioNodes.forEach(n=>{try{if(n.stop)n.stop();if(n.disconnect)n.disconnect()}catch(e){}});audioNodes=[];if(audioGain){try{audioGain.disconnect()}catch(e){}}if(masterGain){try{masterGain.disconnect()}catch(e){}}audioGain=null;masterGain=null;const backgroundPlayer=$("backgroundAudio");if(backgroundPlayer){try{backgroundPlayer.pause();backgroundPlayer.srcObject=null}catch(e){}}backgroundStream=null;activeSound=null;updateSoundButtons();if($("startSleepTimer")){$("startSleepTimer").textContent="Set timer";$("startSleepTimer").disabled=false;$("cancelSleepTimer").classList.remove("visible");if($("sleepTimerStatus"))$("sleepTimerStatus").textContent="Choose a sound, then set a timer."}
 }
 function updateSoundButtons(){
  document.querySelectorAll('#sounds .toggle').forEach(b=>{const onclick=b.getAttribute('onclick')||'';let match=onclick.match(/playAudio\('([^']+)'\)/);let beat=onclick.match(/playBeat\((\d+)\)/);const id=match?match[1]:beat?'beat'+beat[1]:'';b.textContent=(activeSound===id)?'Stop':'Play';});
@@ -242,6 +260,19 @@ function useJournalPrompt(prompt){const field=$('journalText');const current=fie
 function saveNote(){try{localStorage.setItem('quietSpaceJournal',$('journalText').value);$('journalToast').textContent='Saved on this device. Take care of yourself.'}catch(e){$('journalToast').textContent='Your browser could not save this note.'}}
 function loadNote(){try{$('journalText').value=localStorage.getItem('quietSpaceJournal')||''}catch(e){}if($('journalPrompts')&&!$('journalPrompts').children.length)showPromptCategory(activePromptCategory);}
 function clearNote(){if(confirm('Clear your saved note from this device?')){localStorage.removeItem('quietSpaceJournal');$('journalText').value='';$('journalToast').textContent='Note cleared.'}}
+
+document.addEventListener('visibilitychange',()=>{
+ if(document.visibilityState==='visible'&&activeSound){
+  if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume().catch(()=>{});
+  const player=$('backgroundAudio');
+  if(player&&player.srcObject&&player.paused)player.play().catch(()=>{});
+  if(sleepTimerEndsAt&&Date.now()>=sleepTimerEndsAt){stopAudio();$('sleepTimerStatus').textContent='Your sleep timer finished while the page was in the background. Rest well.';}
+ }
+});
+window.addEventListener('pageshow',()=>{
+ if(activeSound&&audioCtx&&audioCtx.state==='suspended')audioCtx.resume().catch(()=>{});
+});
+
 updateSoundButtons();
 if('serviceWorker' in navigator && location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script>
