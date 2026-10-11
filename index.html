@@ -188,6 +188,7 @@ function useJournalPrompt(prompt){const field=$('journalText');const current=fie
 function saveNote(){try{localStorage.setItem('quietSpaceJournal',$('journalText').value);$('journalToast').textContent='Saved on this device. Take care of yourself.'}catch(e){$('journalToast').textContent='Your browser could not save this note.'}}
 function loadNote(){try{$('journalText').value=localStorage.getItem('quietSpaceJournal')||''}catch(e){}if($('journalPrompts')&&!$('journalPrompts').children.length)showPromptCategory(activePromptCategory);}
 function clearNote(){if(confirm('Clear your saved note from this device?')){localStorage.removeItem('quietSpaceJournal');$('journalText').value='';$('journalToast').textContent='Note cleared.'}}
+updateSoundButtons();
 if('serviceWorker' in navigator && location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script>
 </body>
