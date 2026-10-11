@@ -1,2 +1,2 @@
-# Quiet-Space-v1.1
-testing v1.1 features
+# Quiet-Space
+soundscapes and binaural beats to help you sleep

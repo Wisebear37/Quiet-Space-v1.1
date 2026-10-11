@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#e8eee7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Quiet Space">
+<link rel="manifest" href="manifest.json">
+<title>Quiet Space — Mindfulness</title>
+<style>
+:root{--bg:#f5f5ef;--ink:#273c37;--muted:#697a73;--sage:#dce8dd;--sage2:#c4d8ca;--peach:#f2dfd1;--lav:#e7e2f1;--card:#fffefa;--line:#e5e8df;--accent:#476c5d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.45}button{font:inherit;cursor:pointer;border:0}button:focus-visible{outline:3px solid #7c9c8b;outline-offset:3px}.app{max-width:720px;margin:auto;min-height:100dvh;padding:env(safe-area-inset-top) 18px calc(88px + env(safe-area-inset-bottom))}.top{display:flex;align-items:center;justify-content:space-between;padding:18px 2px 10px}.brand{font-weight:750;letter-spacing:-.4px;font-size:20px}.brand span{color:var(--accent)}.eyebrow{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700}.hello{padding:22px 2px 20px}.hello h1{font-size:clamp(29px,7vw,40px);letter-spacing:-1.2px;line-height:1.1;margin:9px 0 10px}.hello p{color:var(--muted);margin:0;max-width:460px}.daily{background:linear-gradient(135deg,#dfeade,#edf0e7);border-radius:28px;padding:22px;display:flex;gap:15px;align-items:center;margin:8px 0 26px}.orb{width:82px;height:82px;flex-shrink:0;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f8f3df,#a9c8b2 72%);box-shadow:0 6px 24px #9cb9a44a}.daily h2{font-size:19px;margin:4px 0}.daily p{font-size:14px;color:#536b60;margin:0 0 12px}.pill{border-radius:99px;background:var(--accent);color:white;padding:10px 17px;font-weight:650;font-size:14px}.section-head{display:flex;align-items:end;justify-content:space-between;margin:24px 2px 12px}.section-head h2{font-size:21px;letter-spacing:-.4px;margin:0}.section-head small{color:var(--muted)}.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tile{min-height:142px;text-align:left;border-radius:22px;padding:17px;background:var(--card);border:1px solid var(--line);color:var(--ink);display:flex;flex-direction:column;justify-content:space-between;transition:transform .15s}.tile:active{transform:scale(.98)}.tile .emoji{font-size:26px}.tile strong{display:block;font-size:16px;margin-top:10px}.tile small{color:var(--muted);font-size:13px}.tile.sage{background:#e5eee4}.tile.peach{background:#f4e6dc}.tile.lav{background:#ebe7f2}.tile.blue{background:#e0edf0}.checkin{border-radius:24px;background:var(--card);border:1px solid var(--line);padding:18px;margin-top:14px}.checkin h3{margin:0 0 4px;font-size:17px}.checkin p{margin:0 0 14px;color:var(--muted);font-size:14px}.moods{display:flex;gap:8px;justify-content:space-between}.mood{background:#f3f3ed;border-radius:16px;flex:1;padding:10px 2px;color:var(--ink);font-size:12px}.mood span{display:block;font-size:24px;margin-bottom:3px}.mood.selected{background:#dce8dd;box-shadow:inset 0 0 0 2px #7c9c8b}.bottom{position:fixed;bottom:0;left:0;right:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#f5f5eff0;backdrop-filter:blur(16px);border-top:1px solid #e4e7df;display:flex;justify-content:center;z-index:5}.nav{width:min(520px,100%);display:flex;justify-content:space-around}.nav button{background:transparent;color:#7a8981;padding:6px 16px;font-size:11px;min-width:74px}.nav button span{display:block;font-size:21px;margin-bottom:1px}.nav button.active{color:var(--accent);font-weight:750}.screen{display:none}.screen.active{display:block}.back{background:transparent;color:var(--muted);padding:8px 0;margin:4px 0 14px}.detail{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:22px;margin-top:8px}.detail h1{font-size:29px;line-height:1.15;letter-spacing:-.7px;margin:8px 0}.detail p{color:var(--muted)}.center{text-align:center}.breath-wrap{height:250px;display:grid;place-items:center;position:relative;margin:12px 0}.breath-circle{height:150px;width:150px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f8f1d9,#b4d1bc 68%);box-shadow:0 0 0 18px #dce8dd80,0 0 0 38px #dce8dd45;transform:scale(.82);transition:transform 4s ease-in-out}.breath-circle.expand{transform:scale(1.12)}.breath-label{position:absolute;font-size:17px;font-weight:700}.timer{font-size:42px;font-variant-numeric:tabular-nums;letter-spacing:1px;margin:10px 0}.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.secondary{border-radius:99px;background:#edf0e9;color:var(--ink);padding:11px 18px;font-weight:650}.primary{border-radius:99px;background:var(--accent);color:white;padding:13px 22px;font-weight:700}.prompt{font-size:19px;line-height:1.55;min-height:95px;margin:20px 0}.progress{height:5px;background:#e9ece4;border-radius:99px;overflow:hidden;margin:18px 0}.progress div{height:100%;width:0;background:#6e947f;transition:width .3s}.sound-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.sound-row:last-child{border-bottom:0}.sound-row small{display:block;color:var(--muted)}.toggle{background:#e2eae1;color:var(--accent);border-radius:99px;padding:9px 14px;font-weight:700;min-width:72px}.note{font-size:12px;color:var(--muted);text-align:center;margin-top:18px}.grounding-list{padding-left:21px;color:var(--muted)}.grounding-list li{padding:7px 0}.journal{width:100%;min-height:130px;border:1px solid var(--line);border-radius:16px;padding:14px;font:inherit;background:#fffefa;color:var(--ink);resize:vertical}.toast{color:var(--accent);font-size:13px;min-height:20px;margin-top:8px}.audio-settings{margin-top:14px}.setting-row{padding:12px 0;border-bottom:1px solid var(--line)}.setting-row:last-child{border-bottom:0}.setting-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}.setting-head label,.setting-head strong{font-weight:700}.setting-head output{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}.volume-slider{width:100%;accent-color:var(--accent);cursor:pointer}.timer-select{font:inherit;background:#edf0e9;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px;max-width:100%}.timer-status{color:var(--muted);font-size:13px;min-height:20px;margin-top:6px}
+@media(min-width:600px){.tiles{grid-template-columns:repeat(4,minmax(0,1fr))}.tile{min-height:160px}.app{padding-left:26px;padding-right:26px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div class="brand">☁ <span>Quiet Space</span></div><div class="eyebrow" id="dateLabel">A little room to breathe</div></header>
+<main>
+<section id="home" class="screen active">
+<div class="hello"><div class="eyebrow">YOUR MOMENT, YOUR PACE</div><h1>Come as you are.</h1><p>You don't have to solve everything right now. Let's make a little space for you.</p></div>
+<div class="daily"><div class="orb"></div><div><div class="eyebrow">A GENTLE RESET · 3 MIN</div><h2>Just breathe for a moment</h2><p>A short guided breathing break for wherever you are.</p><button class="pill" onclick="openPractice('breath')">Begin reset <span aria-hidden="true">→</span></button></div></div>
+<div class="section-head"><h2>What do you need today?</h2><small>Choose what feels right</small></div>
+<div class="tiles">
+<button class="tile sage" onclick="openPractice('calm')"><span class="emoji">🌿</span><span><strong>Calm my mind</strong><small>Settle anxious thoughts</small></span></button>
+<button class="tile peach" onclick="openPractice('sleep')"><span class="emoji">🌙</span><span><strong>Wind down</strong><small>Ease into rest</small></span></button>
+<button class="tile lav" onclick="openPractice('ground')"><span class="emoji">🪨</span><span><strong>Ground myself</strong><small>Come back to now</small></span></button>
+<button class="tile blue" onclick="openPractice('kindness')"><span class="emoji">💛</span><span><strong>Be kinder to me</strong><small>A little self-compassion</small></span></button>
+</div>
+<div class="checkin"><h3>How are you arriving?</h3><p>No judgment, no fixing. Just notice.</p><div class="moods">
+<button class="mood" onclick="selectMood(this,'Rough')"><span>🌧️</span>Rough</button>
+<button class="mood" onclick="selectMood(this,'Anxious')"><span>🌪️</span>Anxious</button>
+<button class="mood" onclick="selectMood(this,'Okay')"><span>☁️</span>Okay</button>
+<button class="mood" onclick="selectMood(this,'Good')"><span>🌤️</span>Good</button>
+<button class="mood" onclick="selectMood(this,'Peaceful')"><span>☀️</span>Peaceful</button>
+</div><div class="toast" id="moodToast" aria-live="polite"></div></div>
+</section>
+<section id="practice" class="screen">
+<button class="back" onclick="showScreen('home')">← Back to your space</button>
+<div class="detail" id="practiceContent"></div>
+</section>
+<section id="sounds" class="screen">
+<div class="hello"><div class="eyebrow">A SOFTER BACKGROUND</div><h1>Sounds for slowing down.</h1><p>Choose a soundscape or a gentle binaural beat. Audio is generated on your device.</p></div>
+<div class="detail">
+<div class="eyebrow">SOUNDScapes</div>
+<div class="sound-row"><div>🌧️ <strong>Soft rain</strong><small>Steady rain against a window</small></div><button class="toggle" onclick="playAudio('rain')">Play</button></div>
+<div class="sound-row"><div>⛈️ <strong>Distant thunderstorm</strong><small>Rain with low, distant rumbles</small></div><button class="toggle" onclick="playAudio('storm')">Play</button></div>
+<div class="sound-row"><div>🌊 <strong>Ocean waves</strong><small>Rolling surf and airy wash</small></div><button class="toggle" onclick="playAudio('ocean')">Play</button></div>
+<div class="sound-row"><div>🏞️ <strong>Forest stream</strong><small>Flowing water, soft and bright</small></div><button class="toggle" onclick="playAudio('stream')">Play</button></div>
+<div class="sound-row"><div>🌲 <strong>Night forest</strong><small>Crickets and a quiet night ambience</small></div><button class="toggle" onclick="playAudio('forest')">Play</button></div>
+<div class="sound-row"><div>🦉 <strong>Crickets at dusk</strong><small>A gentle nighttime chorus</small></div><button class="toggle" onclick="playAudio('crickets')">Play</button></div>
+<div class="sound-row"><div>🍃 <strong>Wind through trees</strong><small>Soft, airy rustling</small></div><button class="toggle" onclick="playAudio('wind')">Play</button></div>
+<div class="sound-row"><div>🔥 <strong>Cozy fireplace</strong><small>Low crackling texture</small></div><button class="toggle" onclick="playAudio('fire')">Play</button></div>
+<div class="sound-row"><div>🚂 <strong>Train carriage</strong><small>Steady low travel rumble</small></div><button class="toggle" onclick="playAudio('train')">Play</button></div>
+<div class="sound-row"><div>☁️ <strong>Brown noise</strong><small>Deep, soft, even noise</small></div><button class="toggle" onclick="playAudio('brown')">Play</button></div>
+<div class="sound-row"><div>🌸 <strong>Pink noise</strong><small>Balanced, softer noise</small></div><button class="toggle" onclick="playAudio('pink')">Play</button></div>
+<div class="sound-row"><div>📻 <strong>White noise</strong><small>Even broadband hush</small></div><button class="toggle" onclick="playAudio('white')">Play</button></div>
+<div class="sound-row"><div>🌌 <strong>Deep ambient hum</strong><small>A low, steady drone</small></div><button class="toggle" onclick="playAudio('hum')">Play</button></div>
+</div>
+<div class="detail" style="margin-top:14px">
+<div class="eyebrow">BINAURAL BEATS</div>
+<h3 style="margin:8px 0">A gentle tonal focus</h3>
+<p>These use slightly different tones in the left and right channels. <strong>Stereo headphones are needed</strong> to hear the binaural effect. Research on benefits is mixed; use these as a relaxation aid, not as a treatment.</p>
+<div class="sound-row"><div>🌙 <strong>Delta · 2 Hz</strong><small>Often associated with deep-sleep sound sessions</small></div><button class="toggle" onclick="playBeat(2)">Play</button></div>
+<div class="sound-row"><div>💤 <strong>Theta · 6 Hz</strong><small>For a quiet, dreamy wind-down</small></div><button class="toggle" onclick="playBeat(6)">Play</button></div>
+<div class="sound-row"><div>🌿 <strong>Alpha · 10 Hz</strong><small>For relaxed, calm listening</small></div><button class="toggle" onclick="playBeat(10)">Play</button></div>
+<div class="sound-row"><div>🧘 <strong>Low beta · 14 Hz</strong><small>A slightly more alert, steady tone</small></div><button class="toggle" onclick="playBeat(14)">Play</button></div>
+<p class="note">Keep the volume low. Don't listen while driving or doing anything that needs full attention. Stop if you feel uncomfortable.</p>
+</div>
+<div class="detail audio-settings" aria-label="Audio settings">
+<div class="eyebrow">YOUR LISTENING SETTINGS</div>
+<div class="setting-row"><div class="setting-head"><label for="volumeControl">Master volume</label><output id="volumeValue" for="volumeControl">35%</output></div><input class="volume-slider" id="volumeControl" type="range" min="0" max="100" value="35" step="1" aria-label="Master audio volume" oninput="setVolume(this.value)"><p class="note" style="text-align:left;margin:7px 0 0">Start softly, especially when listening in bed or with headphones.</p></div>
+<div class="setting-row"><div class="setting-head"><label for="sleepTimer">Sleep timer</label></div><select class="timer-select" id="sleepTimer" aria-label="Choose sleep timer duration"><option value="15">15 minutes</option><option value="30">30 minutes</option><option value="45">45 minutes</option><option value="60">1 hour</option><option value="90">1 hour 30 minutes</option><option value="120">2 hours</option><option value="240">4 hours</option><option value="480">8 hours</option></select><div class="controls" style="justify-content:flex-start;margin-top:10px"><button class="primary" id="startSleepTimer" onclick="startSleepTimer()">Start timer</button><button class="secondary" id="cancelSleepTimer" onclick="cancelSleepTimer()" hidden>Cancel timer</button></div><div class="timer-status" id="sleepTimerStatus" role="status" aria-live="polite">Choose how long you would like your sound to play.</div></div>
+</div><div class="controls" style="margin-top:14px"><button class="secondary" onclick="stopAudio()">■ Stop all audio</button></div>
+</section>
+<section id="journal" class="screen">
+<div class="hello"><div class="eyebrow">A MOMENT WITH YOURSELF</div><h1>Let it out.</h1><p>You don't need the perfect words. This space is for your thoughts, just as they are.</p></div>
+<div class="detail"><label for="journalText"><strong>What's on your mind right now?</strong></label><textarea id="journalText" class="journal" placeholder="I'm feeling…"></textarea><div class="controls" style="justify-content:flex-start;margin-top:12px"><button class="primary" onclick="saveNote()">Save on this device</button><button class="secondary" onclick="clearNote()">Clear</button></div><div class="toast" id="journalToast" aria-live="polite"></div><p class="note">Your writing stays in this browser on this device. It is not sent to a server.</p></div>
+</section>
+<section id="about" class="screen">
+<div class="hello"><div class="eyebrow">A KINDER KIND OF MINDFULNESS</div><h1>There's no wrong way to begin.</h1><p>Quiet Space is a small, free place to pause. No streaks, no pressure, no subscription.</p></div>
+<div class="detail"><h3>Try this when everything feels like too much</h3><ol class="grounding-list"><li>Put both feet on the floor, if that feels comfortable.</li><li>Let your shoulders drop a little.</li><li>Notice one thing you can see, one thing you can feel, and one thing you can hear.</li><li>Remind yourself: “I only need to take the next small step.”</li></ol><p>Mindfulness isn't about forcing yourself to feel calm. It's about meeting yourself where you are.</p><p class="note">Quiet Space is for general wellness and isn't a substitute for professional mental-health care.</p></div>
+</section>
+</main>
+</div>
+<nav class="bottom"><div class="nav">
+<button class="active" data-screen="home" onclick="showScreen('home')"><span>⌂</span>Home</button>
+<button data-screen="sounds" onclick="showScreen('sounds')"><span>♫</span>Sounds</button>
+<button data-screen="journal" onclick="showScreen('journal')"><span>✎</span>Journal</button>
+<button data-screen="about" onclick="showScreen('about')"><span>♡</span>My space</button>
+</div></nav>
+<script>
+const $=id=>document.getElementById(id);
+const today=new Date(); $('dateLabel').textContent=today.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.screen===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='journal')loadNote();}
+function selectMood(el,mood){document.querySelectorAll('.mood').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');$('moodToast').textContent=`Thanks for checking in. You can feel ${mood.toLowerCase()} and still deserve care.`}
+let practiceInterval=null,practiceCount=0,breathInterval=null;
+const practices={
+breath:{tag:'3 MINUTE RESET',title:'One breath at a time.',intro:'Let your breathing be natural. There is nothing to get right here.',type:'breath'},
+calm:{tag:'GENTLE GUIDANCE · 2 MIN',title:'You don\'t have to follow every thought.',intro:'Thoughts can be loud without being instructions. For the next few moments, let them come and go.',type:'guided',steps:['Find a position that feels supportive. Let your hands rest.','Notice where your body touches the chair, bed, or floor.','When a thought appears, quietly name it “thinking.” You do not need to argue with it.','Bring your attention back to one easy breath.','You are allowed to take things one moment at a time.']},
+sleep:{tag:'WIND DOWN · 2 MIN',title:'Nothing else to do right now.',intro:'You can set the day down for a little while. You can return to things later.',type:'guided',steps:['Soften your jaw and let your shoulders be heavy.','Let the bed or chair support the weight of your body.','There is no need to make sleep happen. Just rest.','With each exhale, imagine setting down one small thing.','For now, this moment is enough.']},
+ground:{tag:'GROUNDING · 2 MIN',title:'Come back to the room.',intro:'You are here, in this moment. Take this slowly, and skip anything that doesn\'t feel helpful.',type:'guided',steps:['Name five things you can see around you.','Notice four things you can physically feel.','Listen for three sounds, near or far.','Notice two scents, or two details in the air.','Notice one taste, or take one comfortable breath.']},
+kindness:{tag:'SELF-COMPASSION · 2 MIN',title:'Talk to yourself like someone you love.',intro:'You deserve gentleness, even on the days when you feel behind or overwhelmed.',type:'guided',steps:['Place a hand somewhere comfortable, if you like.','Say quietly: “This is a hard moment.”','Try: “It makes sense that I feel what I feel.”','Try: “May I give myself a little patience.”','You do not have to earn kindness. You can start with this breath.']}
+};
+function openPractice(key){const p=practices[key];stopPractice();showScreen('practice');let c=$('practiceContent');if(p.type==='breath'){c.innerHTML=`<div class="center"><div class="eyebrow">${p.tag}</div><h1>${p.title}</h1><p>${p.intro}</p><div class="breath-wrap"><div class="breath-circle" id="breathCircle"></div><div class="breath-label" id="breathLabel">Ready?</div></div><div class="timer" id="breathTimer">03:00</div><p id="breathHint">Breathe comfortably. Never force or hold your breath.</p><div class="controls"><button class="primary" id="breathStart" onclick="startBreath()">Start</button><button class="secondary" onclick="stopPractice();openPractice('breath')">Reset</button></div></div>`;}else{c.innerHTML=`<div class="eyebrow">${p.tag}</div><h1>${p.title}</h1><p>${p.intro}</p><div class="progress"><div id="guidedProgress"></div></div><div class="prompt" id="guidedPrompt">${p.steps[0]}</div><div class="eyebrow" id="guidedCount">STEP 1 OF ${p.steps.length}</div><div class="controls" style="margin-top:22px"><button class="secondary" onclick="guidedPrev('${key}')">Back</button><button class="primary" id="guidedNext" onclick="guidedNext('${key}')">Next</button></div><p class="note">Take all the time you need. This isn't a test.</p>`;practiceCount=0;window.currentGuided=key;updateGuided();}}
+function stopPractice(){if(practiceInterval)clearInterval(practiceInterval);practiceInterval=null;if(breathInterval)clearInterval(breathInterval);breathInterval=null}
+function startBreath(){if(breathInterval){stopPractice();$('breathStart').textContent='Resume';return;}let remaining=180;$('breathStart').textContent='Pause';const circle=$('breathCircle'),label=$('breathLabel');let phase=0;function setPhase(){circle.classList.toggle('expand',phase%2===0);label.textContent=phase%2===0?'Breathe in':'Breathe out';phase++;}setPhase();breathInterval=setInterval(()=>{remaining--;let m=Math.floor(remaining/60),s=remaining%60;$('breathTimer').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;if(remaining%4===0)setPhase();if(remaining<=0){stopPractice();label.textContent='Well done';$('breathHint').textContent='You made a little room for yourself. Take that gentleness with you.';$('breathStart').textContent='Start again';}},1000)}
+function updateGuided(){const p=practices[window.currentGuided];$('guidedPrompt').textContent=p.steps[practiceCount];$('guidedCount').textContent=`STEP ${practiceCount+1} OF ${p.steps.length}`;$('guidedProgress').style.width=`${(practiceCount+1)/p.steps.length*100}%`;$('guidedNext').textContent=practiceCount===p.steps.length-1?'Finish':'Next';}
+function guidedNext(key){const p=practices[key];if(practiceCount<p.steps.length-1){practiceCount++;updateGuided()}else{$('guidedPrompt').textContent='You showed up for yourself. That matters. Take one more easy breath before you go.';$('guidedCount').textContent='PRACTICE COMPLETE';$('guidedProgress').style.width='100%';$('guidedNext').textContent='Begin again';$('guidedNext').onclick=()=>openPractice(key);}}
+function guidedPrev(key){if(practiceCount>0){practiceCount--;updateGuided()}else{showScreen('home')}}
+let audioCtx=null,activeSound=null,audioNodes=[],audioGain=null,masterGain=null,loopTimer=null,sleepTimerTimeout=null,sleepFadeTimeout=null,sleepTimerEndsAt=0;
+let masterVolume=.35;
+function setVolume(value){masterVolume=Math.max(0,Math.min(1,Number(value)/100));$('volumeValue').textContent=Math.round(masterVolume*100)+'%';if(masterGain&&activeSound){const ctx=audioContext();masterGain.gain.cancelScheduledValues(ctx.currentTime);masterGain.gain.setTargetAtTime(masterVolume,ctx.currentTime,.04)}}
+function connectMasterGain(ctx,initialGain){audioGain=ctx.createGain();audioGain.gain.value=initialGain;masterGain=ctx.createGain();masterGain.gain.value=masterVolume;audioGain.connect(masterGain);masterGain.connect(ctx.destination)}
+function cancelSleepTimer(){if(sleepTimerTimeout)clearTimeout(sleepTimerTimeout);if(sleepFadeTimeout)clearTimeout(sleepFadeTimeout);sleepTimerTimeout=null;sleepFadeTimeout=null;sleepTimerEndsAt=0;$('sleepTimerStatus').textContent='Sleep timer cancelled. Your sound will keep playing until you stop it.';$('startSleepTimer').hidden=false;$('cancelSleepTimer').hidden=true}
+function startSleepTimer(){if(!activeSound){$('sleepTimerStatus').textContent='Choose a sound first, then start your timer.';return}cancelSleepTimer();const minutes=Number($('sleepTimer').value);sleepTimerEndsAt=Date.now()+minutes*60000;const duration=minutes<60?minutes+' minutes':(minutes%60?Math.floor(minutes/60)+' hr '+minutes%60+' min':(minutes/60)+' hour'+(minutes===60?'':'s'));$('sleepTimerStatus').textContent='Timer set for '+duration+'. Your sound will gently fade out at the end.';$('startSleepTimer').hidden=true;$('cancelSleepTimer').hidden=false;sleepTimerTimeout=setTimeout(()=>{if(!activeSound)return;const ctx=audioContext();if(masterGain){masterGain.gain.cancelScheduledValues(ctx.currentTime);masterGain.gain.setValueAtTime(masterGain.gain.value,ctx.currentTime);masterGain.gain.linearRampToValueAtTime(0,ctx.currentTime+10)}$('sleepTimerStatus').textContent='Time to rest. Fading out now…';sleepFadeTimeout=setTimeout(()=>{stopAudio();$('sleepTimerStatus').textContent='Your sound has stopped. Rest well.';$('startSleepTimer').hidden=false;$('cancelSleepTimer').hidden=true;sleepTimerTimeout=null;sleepFadeTimeout=null;sleepTimerEndsAt=0},10000)},minutes*60000)}
+function audioContext(){audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx}
+function makeNoise(kind,level=1){
+ const ctx=audioContext(),size=ctx.sampleRate*4,buffer=ctx.createBuffer(1,size,ctx.sampleRate),data=buffer.getChannelData(0);
+ let last=0;
+ for(let i=0;i<size;i++){const white=Math.random()*2-1;if(kind==='brown'){last=(last+.02*white)/1.02;data[i]=last*3.5}else if(kind==='pink'){last=.97*last+.03*white;data[i]=last*2.4}else data[i]=white;}
+ const src=ctx.createBufferSource();src.buffer=buffer;src.loop=true;
+ const filter=ctx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=kind==='white'?8500:kind==='pink'?2200:kind==='brown'?550:kind==='rain'?2400:kind==='ocean'?850:kind==='stream'?1800:kind==='wind'?600:kind==='storm'?1000:kind==='fire'?1400:kind==='train'?350:1000;
+ const g=ctx.createGain();g.gain.value=level;src.connect(filter);filter.connect(g);g.connect(audioGain);src.start();audioNodes.push(src,filter,g);return {src,filter,g};
+}
+function tone(freq,pan=0,level=.04,type='sine'){
+ const ctx=audioContext(),o=ctx.createOscillator(),g=ctx.createGain(),p=ctx.createStereoPanner();
+ o.type=type;o.frequency.value=freq;g.gain.value=level;p.pan.value=pan;o.connect(g);g.connect(p);p.connect(audioGain);o.start();audioNodes.push(o,g,p);return o;
+}
+function playAudio(type){
+ if(activeSound===type){stopAudio();return}
+ stopAudio();try{const ctx=audioContext();connectMasterGain(ctx,.55);activeSound=type;
+ if(['white','pink','brown'].includes(type)){makeNoise(type,.26)}
+ else if(type==='rain'){makeNoise('rain',.22);makeNoise('pink',.05)}
+ else if(type==='storm'){makeNoise('rain',.2);makeNoise('brown',.12);loopTimer=setInterval(()=>{if(activeSound!=='storm')return;const t=ctx.currentTime;const o=ctx.createOscillator(),g=ctx.createGain();o.type='triangle';o.frequency.setValueAtTime(55+Math.random()*25,t);o.frequency.exponentialRampToValueAtTime(28,t+2.8);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.15,t+.5);g.gain.exponentialRampToValueAtTime(.0001,t+3.2);o.connect(g);g.connect(audioGain);o.start(t);o.stop(t+3.3);audioNodes.push(o,g)},6500)}
+ else if(type==='ocean'){makeNoise('ocean',.2);const lfo=ctx.createOscillator(),lg=ctx.createGain();lfo.frequency.value=.09;lg.gain.value=.09;lfo.connect(lg);lg.connect(audioGain.gain);lfo.start();audioNodes.push(lfo,lg)}
+ else if(type==='stream'){makeNoise('stream',.18);makeNoise('pink',.04)}
+ else if(type==='forest'||type==='crickets'){makeNoise('wind',.09);for(let i=0;i<4;i++){const o=tone(4200+i*90,Math.random()>.5?.4:-.4,.008,'sine');const lfo=ctx.createOscillator(),lg=ctx.createGain();lfo.frequency.value=.8+Math.random()*1.6;lg.gain.value=900;lfo.connect(lg);lg.connect(o.frequency);lfo.start();audioNodes.push(lfo,lg)}}
+ else if(type==='wind'){makeNoise('wind',.19);makeNoise('brown',.05)}
+ else if(type==='fire'){makeNoise('fire',.13);makeNoise('brown',.04);loopTimer=setInterval(()=>{if(activeSound!=='fire')return;const o=tone(800+Math.random()*1600,Math.random()-.5,.008,'triangle');o.frequency.setTargetAtTime(200+Math.random()*400,ctx.currentTime,.08);setTimeout(()=>{try{o.stop()}catch(e){}},180)},240)}
+ else if(type==='train'){makeNoise('train',.22);tone(72,0,.025,'sawtooth')}
+ else if(type==='hum'){tone(90,0,.04,'sine');tone(91.5,0,.025,'sine')}
+ updateSoundButtons();
+ }catch(e){stopAudio();alert('Audio could not start in this browser. Please try again.')}}
+function playBeat(diff){
+ const key='beat'+diff;if(activeSound===key){stopAudio();return}
+ stopAudio();try{const ctx=audioContext();connectMasterGain(ctx,.20);
+ // Use a comfortable carrier range with different tones in left and right channels.
+ tone(180-diff/2,-1,.06,'sine');tone(180+diff/2,1,.06,'sine');activeSound=key;updateSoundButtons();
+ }catch(e){stopAudio();alert('Audio could not start in this browser. Please try again.')}}
+function stopAudio(){
+ if(sleepTimerTimeout)clearTimeout(sleepTimerTimeout);if(sleepFadeTimeout)clearTimeout(sleepFadeTimeout);sleepTimerTimeout=null;sleepFadeTimeout=null;sleepTimerEndsAt=0;
+ if(loopTimer){clearInterval(loopTimer);loopTimer=null}
+ audioNodes.forEach(n=>{try{if(n.stop)n.stop();if(n.disconnect)n.disconnect()}catch(e){}});audioNodes=[];if(audioGain){try{audioGain.disconnect()}catch(e){}}if(masterGain){try{masterGain.disconnect()}catch(e){}}audioGain=null;masterGain=null;activeSound=null;updateSoundButtons();if($("startSleepTimer")){$("startSleepTimer").hidden=false;$("cancelSleepTimer").hidden=true;if($("sleepTimerStatus"))$("sleepTimerStatus").textContent="Choose how long you would like your sound to play."}
+}
+function updateSoundButtons(){
+ document.querySelectorAll('#sounds .toggle').forEach(b=>{const onclick=b.getAttribute('onclick')||'';let match=onclick.match(/playAudio\\('([^']+)'\\)/);let beat=onclick.match(/playBeat\\((\\d+)\\)/);const id=match?match[1]:beat?'beat'+beat[1]:'';b.textContent=(activeSound===id)?'Stop':'Play';});
+}
+function saveNote(){try{localStorage.setItem('quietSpaceJournal',$('journalText').value);$('journalToast').textContent='Saved on this device. Take care of yourself.'}catch(e){$('journalToast').textContent='Your browser could not save this note.'}}
+function loadNote(){try{$('journalText').value=localStorage.getItem('quietSpaceJournal')||''}catch(e){}}
+function clearNote(){if(confirm('Clear your saved note from this device?')){localStorage.removeItem('quietSpaceJournal');$('journalText').value='';$('journalToast').textContent='Note cleared.'}}
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body>
+</html>
