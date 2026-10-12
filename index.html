@@ -57,8 +57,27 @@ body[data-theme="dark"] .dock-stop,body[data-theme="dark"] .dock-cancel{color:#B
 </head>
 <body>
 <audio id="backgroundAudio" autoplay playsinline aria-hidden="true" style="position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;left:-10px;bottom:-10px"></audio>
+<div id="welcomeOverlay" class="welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle" hidden>
+ <div class="welcome-card">
+  <div class="welcome-mark" aria-hidden="true">☁</div>
+  <div class="eyebrow">A LITTLE SPACE JUST FOR YOU</div>
+  <h1 id="welcomeTitle">Welcome to Quiet Space.</h1>
+  <p class="welcome-intro">A gentle place to breathe, rest, reflect, and take things at your own pace. There is no perfect way to use this space.</p>
+  <div class="welcome-work-note"><strong>A work in progress, made with care.</strong><br>Quiet Space is still growing. Your questions, ideas, and feedback are welcome. A dedicated feedback email is coming soon.</div>
+  <h2>Choose a little companion</h2>
+  <p class="welcome-hint">Pick the one that feels most like your kind of calm. You can change it any time.</p>
+  <div class="mascot-choices" role="group" aria-label="Choose your mascot">
+   <button class="mascot-choice" type="button" data-mascot="owl" onclick="chooseMascot('owl')" aria-pressed="false"><span class="mascot-art" aria-hidden="true">🦉</span><strong>Owl</strong><small>Sleepy & wise</small></button>
+   <button class="mascot-choice" type="button" data-mascot="fox" onclick="chooseMascot('fox')" aria-pressed="false"><span class="mascot-art" aria-hidden="true">🦊</span><strong>Fox</strong><small>Curious & cozy</small></button>
+   <button class="mascot-choice" type="button" data-mascot="cat" onclick="chooseMascot('cat')" aria-pressed="false"><span class="mascot-art" aria-hidden="true">🐈</span><strong>Cat</strong><small>Quiet & content</small></button>
+   <button class="mascot-choice" type="button" data-mascot="bear" onclick="chooseMascot('bear')" aria-pressed="false"><span class="mascot-art" aria-hidden="true">🐻</span><strong>Bear</strong><small>Gentle & grounded</small></button>
+  </div>
+  <button id="beginQuietSpace" class="welcome-begin" type="button" onclick="finishWelcome()" disabled>Let's begin</button>
+  <p class="welcome-footnote">These are temporary mascot symbols for now. The custom illustrated companions are still to come.</p>
+ </div>
+</div>
 <div class="app">
-<header class="top"><div class="brand">☁ <span>Quiet Space</span></div><div class="top-right"><div class="eyebrow" id="dateLabel">A little room to breathe</div><label class="theme-switch" title="Switch between light and dark mode"><span class="theme-icon" aria-hidden="true">☀</span><input id="themeToggle" type="checkbox" role="switch" aria-label="Dark mode"><span class="switch-track"><span class="switch-thumb"></span></span><span class="theme-icon" aria-hidden="true">☾</span></label></div></header>
+<header class="top"><div class="brand"><span id="brandMascot" aria-hidden="true">🦉</span> <span>Quiet Space</span></div><div class="top-right"><div class="eyebrow" id="dateLabel">A little room to breathe</div><label class="theme-switch" title="Switch between light and dark mode"><span class="theme-icon" aria-hidden="true">☀</span><input id="themeToggle" type="checkbox" role="switch" aria-label="Dark mode"><span class="switch-track"><span class="switch-thumb"></span></span><span class="theme-icon" aria-hidden="true">☾</span></label></div></header>
 <main>
 <section id="home" class="screen active">
 <div class="hello"><div class="eyebrow">YOUR MOMENT, YOUR PACE</div><h1>Come as you are.</h1><p>You don't have to solve everything right now. Let's make a little space for you.</p></div>
@@ -130,6 +149,7 @@ body[data-theme="dark"] .dock-stop,body[data-theme="dark"] .dock-cancel{color:#B
 </section>
 <section id="about" class="screen">
 <div class="hello"><div class="eyebrow">A KINDER KIND OF MINDFULNESS</div><h1>There's no wrong way to begin.</h1><p>Quiet Space is a small, free place to pause. No streaks, no pressure, no subscription.</p></div>
+<div class="detail"><h3>Your little companion</h3><p>Quiet Space is yours to shape. Choose the companion that makes this feel a little more like your space.</p><div class="current-mascot" id="currentMascotSummary"><span class="current-mascot-art" aria-hidden="true">🦉</span><div><strong>Owl</strong><small>Sleepy & wise</small></div></div><button class="secondary" type="button" onclick="openWelcome()">Change mascot</button></div>
 <div class="detail"><h3>Try this when everything feels like too much</h3><ol class="grounding-list"><li>Put both feet on the floor, if that feels comfortable.</li><li>Let your shoulders drop a little.</li><li>Notice one thing you can see, one thing you can feel, and one thing you can hear.</li><li>Remind yourself: “I only need to take the next small step.”</li></ol><p>Mindfulness isn't about forcing yourself to feel calm. It's about meeting yourself where you are.</p><p class="note">Quiet Space is for general wellness and isn't a substitute for professional mental-health care.</p></div>
 </section>
 </main>
@@ -153,6 +173,7 @@ body[data-theme="dark"] .dock-stop,body[data-theme="dark"] .dock-cancel{color:#B
 <script>
 const $=id=>document.getElementById(id);
 
+.welcome-overlay{position:fixed;inset:0;z-index:30;overflow-y:auto;display:flex;align-items:center;justify-content:center;padding:22px 14px;background:#252D49B8;backdrop-filter:blur(12px)}.welcome-overlay[hidden]{display:none}.welcome-card{width:min(560px,100%);max-height:calc(100dvh - 28px);overflow-y:auto;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:28px;padding:clamp(20px,5vw,32px);box-shadow:0 24px 80px #10162b55}.welcome-mark{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,#D8C9F0,#DCE8F4);font-size:30px;margin-bottom:18px}.welcome-card h1{font-size:clamp(28px,7vw,36px);line-height:1.1;letter-spacing:-1px;margin:8px 0 10px}.welcome-card h2{font-size:19px;margin:22px 0 4px}.welcome-intro,.welcome-hint{color:var(--muted);margin:0}.welcome-work-note{background:#F3EFFB;border:1px solid #E3DDF0;border-radius:16px;padding:12px 14px;margin:16px 0;font-size:13px;color:#3D4563}.mascot-choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:14px 0 18px}.mascot-choice{min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 5px;border:1px solid var(--line);border-radius:17px;background:var(--bg);color:var(--ink)}.mascot-choice[aria-pressed="true"]{border:2px solid var(--accent);padding:11px 4px;background:#E8E2F5;box-shadow:0 0 0 3px #9B9BD022}.mascot-art{font-size:34px;line-height:1.25}.mascot-choice strong{font-size:14px}.mascot-choice small{font-size:10px;color:var(--muted);text-align:center}.welcome-begin{width:100%;border-radius:99px;background:var(--accent);color:white;padding:13px 18px;font-weight:750}.welcome-begin:disabled{opacity:.42;cursor:not-allowed}.welcome-footnote{font-size:11px;color:var(--muted);text-align:center;margin:12px 0 0}.current-mascot{display:flex;align-items:center;gap:12px;margin:14px 0}.current-mascot-art{font-size:36px;width:56px;height:56px;border-radius:17px;background:var(--bg);display:grid;place-items:center}.current-mascot strong,.current-mascot small{display:block}.current-mascot small{font-size:13px;color:var(--muted)}body[data-theme="dark"] .welcome-work-note{background:#343D5B;border-color:#465071;color:#E5E8F4}body[data-theme="dark"] .mascot-choice[aria-pressed="true"]{background:#41466D;color:#F0ECF8}@media(max-width:390px){.mascot-choices{gap:5px}.mascot-choice{padding:10px 3px}.mascot-choice[aria-pressed="true"]{padding:9px 2px}.mascot-art{font-size:29px}.mascot-choice small{font-size:9px}} 
 function applyTheme(isDark){
   document.body.dataset.theme=isDark?'dark':'light';
   const toggle=$('themeToggle');
@@ -167,6 +188,21 @@ applyTheme(savedTheme==='dark');
 $('themeToggle').addEventListener('change',e=>applyTheme(e.target.checked));
 
 const today=new Date(); $('dateLabel').textContent=today.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
+const mascotDetails={owl:{emoji:'🦉',name:'Owl',mood:'Sleepy & wise'},fox:{emoji:'🦊',name:'Fox',mood:'Curious & cozy'},cat:{emoji:'🐈',name:'Cat',mood:'Quiet & content'},bear:{emoji:'🐻',name:'Bear',mood:'Gentle & grounded'}};
+let chosenMascot=null;
+function applyMascot(key){
+ const mascot=mascotDetails[key]||mascotDetails.owl;
+ chosenMascot=mascotDetails[key]?key:'owl';
+ const brand=$('brandMascot');if(brand)brand.textContent=mascot.emoji;
+ const summary=$('currentMascotSummary');
+ if(summary)summary.innerHTML='<span class="current-mascot-art" aria-hidden="true">'+mascot.emoji+'</span><div><strong>'+mascot.name+'</strong><small>'+mascot.mood+'</small></div>';
+ document.querySelectorAll('.mascot-choice').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mascot===chosenMascot)));
+ try{localStorage.setItem('quietSpaceMascot',chosenMascot)}catch(e){}
+}
+function chooseMascot(key){if(!mascotDetails[key])return;applyMascot(key);const begin=$('beginQuietSpace');if(begin)begin.disabled=false}
+function openWelcome(){const overlay=$('welcomeOverlay');if(!overlay)return;const saved=(()=>{try{return localStorage.getItem('quietSpaceMascot')}catch(e){return null}})();chooseMascot(saved||chosenMascot||'owl');overlay.hidden=false;document.body.style.overflow='hidden';}
+function finishWelcome(){if(!chosenMascot)chooseMascot('owl');try{localStorage.setItem('quietSpaceWelcomeSeen','yes')}catch(e){}$('welcomeOverlay').hidden=true;document.body.style.overflow='';}
+function initMascotWelcome(){const saved=(()=>{try{return localStorage.getItem('quietSpaceMascot')}catch(e){return null}})();applyMascot(saved||'owl');let seen=false;try{seen=localStorage.getItem('quietSpaceWelcomeSeen')==='yes'}catch(e){}if(!seen)openWelcome();}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.screen===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='journal')loadNote();}
 function selectMood(el,mood){document.querySelectorAll('.mood').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');$('moodToast').textContent=`Thanks for checking in. You can feel ${mood.toLowerCase()} and still deserve care.`}
 let practiceInterval=null,practiceCount=0,breathInterval=null;
@@ -305,6 +341,7 @@ window.addEventListener('pageshow',()=>{
 });
 
 updateSoundButtons();
+initMascotWelcome();
 if('serviceWorker' in navigator && location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script>
 </body>
